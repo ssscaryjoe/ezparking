@@ -1,0 +1,123 @@
+# part a function pseudocode
+
+FUNCTION displayMenu()
+    DISPLAY "1. record a car entering a bay"
+    DISPLAY "2. remove a car from a bay"
+    DISPLAY "3. view status of all bays"
+    DISPLAY "4. display occupancy totals"
+    DISPLAY "5. save data and exit"
+END FUNCTION
+
+FUNCTION loadData(dictBays)
+    OPEN parking_data.txt for reading
+    FOR each saved bay record
+        READ the bay number, plate, and occupied status
+        IF the bay number exists in dictBays THEN
+            UPDATE the matching inner dictionary
+        END IF
+    END FOR
+    CLOSE parking_data.txt
+END FUNCTION
+
+FUNCTION saveData(dictBays)
+    OPEN parking_data.txt for writing
+    FOR each bay number in dictBays
+        WRITE the bay number, plate, and occupied status
+    END FOR
+    CLOSE parking_data.txt
+END FUNCTION
+
+FUNCTION recordEntry(dictBays)
+    GET a bay number
+    GET a licence plate
+
+    IF the bay number is invalid THEN
+        DISPLAY "invalid bay number"
+        RETURN
+    END IF
+
+    IF the licence plate is empty or invalid THEN
+        DISPLAY "invalid licence plate"
+        RETURN
+    END IF
+
+    IF dictBays[bay number]["occupied"] is True THEN
+        DISPLAY "bay is already occupied"
+        RETURN
+    END IF
+
+    SET dictBays[bay number]["plate"] to the licence plate
+    SET dictBays[bay number]["occupied"] to True
+    DISPLAY entry confirmation
+END FUNCTION
+
+FUNCTION removeCar(dictBays)
+    GET a bay number
+
+    IF the bay number is invalid THEN
+        DISPLAY "invalid bay number"
+        RETURN
+    END IF
+
+    IF dictBays[bay number]["occupied"] is False THEN
+        DISPLAY "bay is empty"
+        RETURN
+    END IF
+
+    SET dictBays[bay number]["plate"] to an empty string
+    SET dictBays[bay number]["occupied"] to False
+    DISPLAY removal confirmation
+END FUNCTION
+
+FUNCTION viewStatus(dictBays)
+    FOR each bay number in dictBays
+        DISPLAY the bay number and occupancy status
+        IF dictBays[bay number]["occupied"] is True THEN
+            DISPLAY the licence plate
+        END IF
+    END FOR
+END FUNCTION
+
+FUNCTION calculateTotals(dictBays)
+    SET total bays to the number of items in dictBays
+    SET occupied bays to 0
+
+    FOR each bay number in dictBays
+        IF dictBays[bay number]["occupied"] is True THEN
+            INCREASE occupied bays by 1
+        END IF
+    END FOR
+
+    SET free bays to total bays minus occupied bays
+    DISPLAY total bays, occupied bays, and free bays
+END FUNCTION
+
+# part a main program pseudocode
+CREATE dictBays as a dictionary of dictionaries
+    EACH bay stores a plate and occupied status
+
+CALL loadData(dictBays)
+SET running to True
+
+WHILE running is True
+    CALL displayMenu()
+    GET the user's menu choice
+
+    IF the choice is 1 THEN
+        CALL recordEntry(dictBays)
+    ELSE IF the choice is 2 THEN
+        CALL removeCar(dictBays)
+    ELSE IF the choice is 3 THEN
+        CALL viewStatus(dictBays)
+    ELSE IF the choice is 4 THEN
+        CALL calculateTotals(dictBays)
+    ELSE IF the choice is 5 THEN
+        CALL saveData(dictBays)
+        DISPLAY save confirmation
+        SET running to False
+    ELSE
+        DISPLAY "invalid choice"
+    END IF
+END WHILE
+
+END

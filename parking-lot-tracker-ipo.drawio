@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" modified="2026-09-12T00:00:00.000Z" agent="VS Code" version="24.7.17" type="device">
+  <diagram id="parking-lot-ipo" name="parking lot ipo">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="parking lot tracker ipo chart" style="text;fontSize=24;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="300" y="30" width="570" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="input" value="&lt;b&gt;input&lt;/b&gt;&lt;br&gt;&lt;br&gt;parking_data.txt at startup&lt;br&gt;menu choice 1 to 5&lt;br&gt;valid bay number&lt;br&gt;non-empty licence plate&lt;br&gt;current bay data&lt;br&gt;dictionary of bay records" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=16;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="150" width="300" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="process" value="&lt;b&gt;process&lt;/b&gt;&lt;br&gt;&lt;br&gt;loadData() reads saved state&lt;br&gt;displayMenu() shows five options&lt;br&gt;recordEntry() validates and records a car&lt;br&gt;removeCar() validates and clears a bay&lt;br&gt;viewStatus() loops through every bay&lt;br&gt;calculateTotals() counts total, occupied, and free bays&lt;br&gt;saveData() writes changes before exit" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=16;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="435" y="150" width="300" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="output" value="&lt;b&gt;output&lt;/b&gt;&lt;br&gt;&lt;br&gt;clear five-option menu&lt;br&gt;entry confirmation or validation error&lt;br&gt;removal confirmation or validation error&lt;br&gt;every bay number and occupancy status&lt;br&gt;licence plate when occupied&lt;br&gt;total, occupied, and free counts&lt;br&gt;save confirmation and program exit message" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=16;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="810" y="150" width="300" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="input" target="process">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2" value="" style="endArrow=block;html=1;rounded=0;" edge="1" parent="1" source="process" target="output">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="part a uses functions and a dictionary of dictionaries" style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;spacing=10;" vertex="1" parent="1">
+          <mxGeometry x="300" y="540" width="570" height="90" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
