@@ -1,6 +1,14 @@
-"""parking lot tracker part a"""
+# File: parking_lot_tracker_part_a.py
+# Description: tracks parking-bay occupancy using a dictionary of dictionaries
+# Author: Ezlan Sohani
+# Date created: 2026-09-12
 
 
+# Function: displayMenu()
+# Purpose: show five menu options
+# Inputs: none
+# Outputs: prints menu
+# Data types: none
 def displayMenu():
 	# menu choices
 	print("\nparking lot tracker")
@@ -11,6 +19,11 @@ def displayMenu():
 	print("5. save data and exit")
 
 
+# Function: loadData()
+# Purpose: read saved state and update dictBays
+# Inputs: dictBays dict
+# Outputs: updates dictBays in place
+# Data types: dict, int, string, bool
 def loadData(dictBays):
 	# load saved bay data
 	try:
@@ -28,12 +41,17 @@ def loadData(dictBays):
 
 				if bay_number in dictBays:
 					dictBays[bay_number]["plate"] = plate
-					dictBays[bay_number]["occupied"] = occupied_text == "true"
+					dictBays[bay_number]["occupied"] = occupied_text == "True"
 	except FileNotFoundError:
 		# start with empty bays when no save file exists
 		pass
 
 
+# Function: saveData()
+# Purpose: write current bay data to file
+# Inputs: dictBays dict
+# Outputs: writes parking_data.txt
+# Data types: dict, int, string, bool
 def saveData(dictBays):
 	# save current bay data
 	with open("parking_data.txt", "w", encoding="utf-8") as data_file:
@@ -43,7 +61,12 @@ def saveData(dictBays):
 			)
 
 
-def is_valid_plate(plate):
+# Function: isValidPlate()
+# Purpose: check licence plate is non empty and valid chars
+# Inputs: plate string
+# Outputs: True if valid else False
+# Data types: string, bool
+def isValidPlate(plate):
 	# basic plate validation
 	cleaned_plate = plate.strip()
 	return bool(cleaned_plate) and all(
@@ -51,7 +74,12 @@ def is_valid_plate(plate):
 	)
 
 
-def get_bay_number(dictBays):
+# Function: getBayNumber()
+# Purpose: get and validate bay number from user
+# Inputs: dictBays dict
+# Outputs: bay number int or None if invalid
+# Data types: dict, int
+def getBayNumber(dictBays):
 	# get and validate bay number
 	try:
 		bay_number = int(input("enter bay number: "))
@@ -63,15 +91,20 @@ def get_bay_number(dictBays):
 	return bay_number
 
 
+# Function: recordEntry()
+# Purpose: park a car in a free bay
+# Inputs: dictBays dict
+# Outputs: updates dictBays prints confirmation or error
+# Data types: dict, int, string, bool
 def recordEntry(dictBays):
 	# record a car in a free bay
-	bay_number = get_bay_number(dictBays)
+	bay_number = getBayNumber(dictBays)
 	if bay_number is None:
 		print("invalid bay number")
 		return
 
 	plate = input("enter licence plate: ").strip()
-	if not is_valid_plate(plate):
+	if not isValidPlate(plate):
 		print("invalid licence plate")
 		return
 
@@ -84,9 +117,14 @@ def recordEntry(dictBays):
 	print("entry recorded")
 
 
+# Function: removeCar()
+# Purpose: remove a car from an occupied bay
+# Inputs: dictBays dict
+# Outputs: updates dictBays prints confirmation or error
+# Data types: dict, int, bool
 def removeCar(dictBays):
 	# remove a car from an occupied bay
-	bay_number = get_bay_number(dictBays)
+	bay_number = getBayNumber(dictBays)
 	if bay_number is None:
 		print("invalid bay number")
 		return
@@ -96,10 +134,15 @@ def removeCar(dictBays):
 		return
 
 	dictBays[bay_number]["plate"] = ""
-	dictBays[bay_number]["occupied"] = True
+	dictBays[bay_number]["occupied"] = False
 	print("car removed")
 
 
+# Function: viewStatus()
+# Purpose: show all bays with status and plate
+# Inputs: dictBays dict
+# Outputs: prints every bay
+# Data types: dict, int, string, bool
 def viewStatus(dictBays):
 	# display every bay
 	for bay_number, bay_data in dictBays.items():
@@ -110,22 +153,32 @@ def viewStatus(dictBays):
 			print(f"bay {bay_number}: {status}")
 
 
+# Function: calculateTotals()
+# Purpose: count total occupied and free bays
+# Inputs: dictBays dict
+# Outputs: prints totals returns counts
+# Data types: dict, int
 def calculateTotals(dictBays):
 	# calculate bay totals
-	total_bays = len(dictBays)
-	occupied_bays = 1
+	i_total = len(dictBays)
+	i_occupied = 0
 
 	for bay_data in dictBays.values():
 		if bay_data["occupied"]:
-			occupied_bays += 1
+			i_occupied += 1
 
-	free_bays = total_bays - occupied_bays
-	print(f"total bays: {total_bays}")
-	print(f"occupied bays: {occupied_bays}")
-	print(f"free bays: {free_bays}")
-	return total_bays, occupied_bays, free_bays
+	i_free = i_total - i_occupied
+	print(f"total bays: {i_total}")
+	print(f"occupied bays: {i_occupied}")
+	print(f"free bays: {i_free}")
+	return i_total, i_occupied, i_free
 
 
+# Function: main()
+# Purpose: load data then run five option menu loop
+# Inputs: none
+# Outputs: runs menu updates dictBays saves on exit
+# Data types: dict, string, bool
 def main():
 	# part a dictionary of dictionaries
 	dictBays = {
@@ -136,10 +189,10 @@ def main():
 
 	# load saved state before menu
 	loadData(dictBays)
-	running = True
+	b_running = True
 
 	# menu loop
-	while running:
+	while b_running:
 		displayMenu()
 		choice = input("choose an option: ").strip()
 
@@ -155,7 +208,7 @@ def main():
 			saveData(dictBays)
 			print("data saved")
 			print("program ended")
-			running = False
+			b_running = False
 		else:
 			print("invalid choice")
 

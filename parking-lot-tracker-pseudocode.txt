@@ -27,9 +27,31 @@ FUNCTION saveData(dictBays)
     CLOSE parking_data.txt
 END FUNCTION
 
+FUNCTION isValidPlate(plate)
+    STRIP whitespace from plate
+    IF plate is empty THEN
+        RETURN False
+    END IF
+    IF every character is alphanumeric or space or hyphen THEN
+        RETURN True
+    ELSE
+        RETURN False
+    END IF
+END FUNCTION
+
+FUNCTION getBayNumber(dictBays)
+    GET bay number input
+    IF input is not a number THEN
+        RETURN None
+    END IF
+    IF bay number not in dictBays THEN
+        RETURN None
+    END IF
+    RETURN bay number
+END FUNCTION
+
 FUNCTION recordEntry(dictBays)
-    GET a bay number
-    GET a licence plate
+    CALL getBayNumber(dictBays)
 
     IF the bay number is invalid THEN
         DISPLAY "invalid bay number"
@@ -52,7 +74,7 @@ FUNCTION recordEntry(dictBays)
 END FUNCTION
 
 FUNCTION removeCar(dictBays)
-    GET a bay number
+    CALL getBayNumber(dictBays)
 
     IF the bay number is invalid THEN
         DISPLAY "invalid bay number"
@@ -79,17 +101,17 @@ FUNCTION viewStatus(dictBays)
 END FUNCTION
 
 FUNCTION calculateTotals(dictBays)
-    SET total bays to the number of items in dictBays
-    SET occupied bays to 0
+    SET i_total to the number of items in dictBays
+    SET i_occupied to 0
 
     FOR each bay number in dictBays
         IF dictBays[bay number]["occupied"] is True THEN
-            INCREASE occupied bays by 1
+            INCREASE i_occupied by 1
         END IF
     END FOR
 
-    SET free bays to total bays minus occupied bays
-    DISPLAY total bays, occupied bays, and free bays
+    SET i_free to i_total minus i_occupied
+    DISPLAY i_total, i_occupied, and i_free
 END FUNCTION
 
 # part a main program pseudocode
@@ -97,9 +119,9 @@ CREATE dictBays as a dictionary of dictionaries
     EACH bay stores a plate and occupied status
 
 CALL loadData(dictBays)
-SET running to True
+SET b_running to True
 
-WHILE running is True
+WHILE b_running is True
     CALL displayMenu()
     GET the user's menu choice
 
@@ -114,7 +136,7 @@ WHILE running is True
     ELSE IF the choice is 5 THEN
         CALL saveData(dictBays)
         DISPLAY save confirmation
-        SET running to False
+        SET b_running to False
     ELSE
         DISPLAY "invalid choice"
     END IF
