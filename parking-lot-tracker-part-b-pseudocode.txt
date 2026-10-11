@@ -1,0 +1,196 @@
+# part b object-oriented pseudocode
+
+# parking bay class to store bay data and methods
+CLASS ParkingBay
+    CONSTRUCTOR(bayNumber)
+        SET private __bayNumber to bayNumber
+        SET private __plate to ""
+        SET private __occupied to False
+    END CONSTRUCTOR
+
+    METHOD parkCar(plate)
+        IF __occupied is True THEN
+            RETURN False, "bay is already occupied"
+        END IF
+        IF plate is empty THEN
+            RETURN False, "invalid licence plate"
+        END IF
+        SET __plate to plate
+        SET __occupied to True
+        RETURN True, "entry recorded"
+    END METHOD
+
+    METHOD removeCar()
+        IF __occupied is False THEN
+            RETURN False, "bay is empty"
+        END IF
+        SET __plate to ""
+        SET __occupied to False
+        RETURN True, "car removed"
+    END METHOD
+
+    METHOD isOccupied()
+        RETURN __occupied
+    END METHOD
+
+    METHOD getBayNumber()
+        RETURN __bayNumber
+    END METHOD
+
+    METHOD getPlate()
+        RETURN __plate
+    END METHOD
+END CLASS
+
+# part b function pseudocode
+
+FUNCTION displayMenu()
+    DISPLAY "1. record a car entering a bay"
+    DISPLAY "2. remove a car from a bay"
+    DISPLAY "3. view status of all bays"
+    DISPLAY "4. display occupancy totals"
+    DISPLAY "5. save data and exit"
+END FUNCTION
+
+# load saved bay data into bay objects
+FUNCTION loadData(lstBays)
+    OPEN parking_data.txt for reading
+    FOR each saved bay record
+        READ the bay number, plate, and occupied status
+        FOR each bay in lstBays
+            IF bay.getBayNumber() equals bay number THEN
+                IF occupied status is True THEN
+                    CALL bay.parkCar(plate)
+                END IF
+            END IF
+        END FOR
+    END FOR
+    CLOSE parking_data.txt
+END FUNCTION
+
+# save bay data to file using getters
+FUNCTION saveData(lstBays)
+    OPEN parking_data.txt for writing
+    FOR each bay in lstBays
+        WRITE bay.getBayNumber(), bay.getPlate(), and bay.isOccupied()
+    END FOR
+    CLOSE parking_data.txt
+END FUNCTION
+
+FUNCTION isValidPlate(plate)
+    STRIP whitespace from plate
+    IF plate is empty THEN
+        RETURN False
+    END IF
+    IF every character is alphanumeric or space or hyphen THEN
+        RETURN True
+    ELSE
+        RETURN False
+    END IF
+END FUNCTION
+
+# find and return matching bay object
+FUNCTION getBay(lstBays)
+    GET bay number input
+    IF input is not a number THEN
+        RETURN None
+    END IF
+    FOR each bay in lstBays
+        IF bay.getBayNumber() equals bay number THEN
+            RETURN bay
+        END IF
+    END FOR
+    RETURN None
+END FUNCTION
+
+# record entry using bay method
+FUNCTION recordEntry(lstBays)
+    SET bay to getBay(lstBays)
+
+    IF bay is None THEN
+        DISPLAY "invalid bay number"
+        RETURN
+    END IF
+
+    GET licence plate input
+    IF licence plate is invalid THEN
+        DISPLAY "invalid licence plate"
+        RETURN
+    END IF
+
+    CALL bay.parkCar(plate) and get result
+    DISPLAY result message
+END FUNCTION
+
+# remove car using bay method
+FUNCTION removeCar(lstBays)
+    SET bay to getBay(lstBays)
+
+    IF bay is None THEN
+        DISPLAY "invalid bay number"
+        RETURN
+    END IF
+
+    CALL bay.removeCar() and get result
+    DISPLAY result message
+END FUNCTION
+
+# show all bays using getters
+FUNCTION viewStatus(lstBays)
+    FOR each bay in lstBays
+        SET bay_number to bay.getBayNumber()
+        IF bay.isOccupied() is True THEN
+            DISPLAY bay_number, "occupied", and bay.getPlate()
+        ELSE
+            DISPLAY bay_number, "free"
+        END IF
+    END FOR
+END FUNCTION
+
+# calculate occupancy totals using isOccupied
+FUNCTION calculateTotals(lstBays)
+    SET i_total to the number of items in lstBays
+    SET i_occupied to 0
+
+    FOR each bay in lstBays
+        IF bay.isOccupied() is True THEN
+            INCREASE i_occupied by 1
+        END IF
+    END FOR
+
+    SET i_free to i_total minus i_occupied
+    DISPLAY i_total, i_occupied, and i_free
+END FUNCTION
+
+# part b main program pseudocode
+
+# make list of parking bay objects
+CREATE lstBays as a list of ParkingBay objects (bay 1, bay 2, bay 3)
+
+# changed to pass lstbays into loadData
+CALL loadData(lstBays)
+SET b_running to True
+
+WHILE b_running is True
+    CALL displayMenu()
+    GET the user's menu choice
+
+    # changed function arguments to pass lstbays instead of dictbays
+    IF the choice is 1 THEN
+        CALL recordEntry(lstBays)
+    ELSE IF the choice is 2 THEN
+        CALL removeCar(lstBays)
+    ELSE IF the choice is 3 THEN
+        CALL viewStatus(lstBays)
+    ELSE IF the choice is 4 THEN
+        CALL calculateTotals(lstBays)
+    ELSE IF the choice is 5 THEN
+        CALL saveData(lstBays)
+        DISPLAY save confirmation
+        SET b_running to False
+    ELSE
+        DISPLAY "invalid choice"
+    END IF
+END WHILE
+
+END
